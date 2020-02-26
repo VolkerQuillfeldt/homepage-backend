@@ -6,17 +6,26 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component("ServiceReader")
 public class ServiceReader {
 
-	private String basePath = "/app/webpicture";
+	@Value("${dataPath}")
+	String dataPath;
+
 	private HashSet<String> continentSet = new HashSet<>();
 	private HashMap<String, ArrayList> countryMap = new HashMap<>();
 	private HashMap<String, ArrayList> travelMap = new HashMap<>();
 
-	public ServiceReader() {
+	@PostConstruct
+	public void init() {
+		
+		String basePath = dataPath+"webpicture";
+		
 		File basePathDir = new File(basePath);
 		if (basePathDir.exists() && basePathDir.isDirectory()) {
 			File[] directories = basePathDir.listFiles(File::isDirectory);
@@ -62,9 +71,6 @@ public class ServiceReader {
 
 				}
 			}
-		}else{
-			File file = new File("hallo");
-			System.out.println(file.getAbsolutePath());
 		}
 	}
 
