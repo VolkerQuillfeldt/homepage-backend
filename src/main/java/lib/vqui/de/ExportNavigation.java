@@ -11,18 +11,20 @@ import org.springframework.context.annotation.Configuration;
 
 public class ExportNavigation {
 
-	private ArrayList<Continent> continentes;
+	private ArrayList<ContinentJSON> continentes;
 	
 
-	public List<Continent> getContinents() {
+	public List<ContinentJSON> getContinents() {
 		return continentes;
 	}
 
-	public ExportNavigation(ServiceReader serviceReader) {
-		this.continentes = (ArrayList<Continent>) getContinentes(serviceReader);
+	public ExportNavigation(NavigationReader serviceReader) {
+		this.continentes = serviceReader.getContinentes();
 	}
 
-	public List<Continent> getContinentes(ServiceReader serviceReader) {
+
+	/*
+	public List<Continent> getContinentes(NavigationReader serviceReader) {
 		ArrayList<Continent> exportListContinent = new ArrayList<>();
 		ArrayList<String> continentList = (ArrayList<String>) serviceReader.getNavigationContinents();
 		if (continentList != null &&  ! continentList.isEmpty()) {
@@ -68,5 +70,5 @@ public class ExportNavigation {
 		}
 
 		return exportListContinent;
-	}
+	}*/
 }

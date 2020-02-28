@@ -16,18 +16,18 @@ public class ExportController {
 	String dataPath;
 	
 	@Autowired
-	private ServiceReader serviceReader;
+	private NavigationReader serviceReader;
 
 	@CrossOrigin(origins = {"http://localhost:3000", "http://192.168.178.*:3000"})
 	@GetMapping("/getNavigation")
 	public ExportNavigation getNavigation() {
-		System.out.println("X"+dataPath);
 		return new ExportNavigation(serviceReader );
 	}
 	
 	@CrossOrigin(origins = {"http://localhost:3000", "http://192.168.178.*:3000"})
 	@GetMapping("/getPictures")
 	public ExportPictures getPictures(@RequestParam String path, @RequestParam Integer page, @RequestParam Integer count) {
+			path =  dataPath+"webpicture"+path;
 			return new ExportPictures(path,page, count);
 	}
 	
@@ -37,7 +37,6 @@ public class ExportController {
 	@CrossOrigin(origins = {"http://localhost:3000", "http://192.168.178.*:3080"})
 	@GetMapping("/getStartPage")
 	public ExportPictures getPictures() {
-		
 		String path =  dataPath+"highlights";
 		Integer page = Integer.valueOf(1);
 		Integer count = Integer.valueOf(10);

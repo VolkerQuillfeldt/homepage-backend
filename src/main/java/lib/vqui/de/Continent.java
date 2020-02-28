@@ -1,32 +1,43 @@
 package lib.vqui.de;
+import java.util.Set;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
-public class Continent implements Comparable {
 
-	private final String continent;
-	private final List<Country> countries;
-
-	public Continent(String continent, ArrayList<Country> exportListCountry) {
-		this.continent = continent;
-		this.countries = exportListCountry;
+@Entity
+@Table(name = "hp.continent")
+public class Continent {
+	@Id
+	@Column(name = "continent_id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	long id;
+	
+	@Column(name = "continent_name")
+	String name;
+	
+	@OneToMany(mappedBy = "continent")
+	private Set<Country> countries;
+    public Set<Country> getCountries() {
+        return countries;
+    }
+	
+	public long getId() {
+		return id;
 	}
-
-	public List<Country> getCountries() {
-		return countries;
+	public void setId(long id) {
+		this.id = id;
 	}
-
-	public String getContinent() {
-		return continent;
+	public String getName() {
+		return name;
 	}
-
-	@Override
-	public int compareTo(Object o) {
-		if (o.getClass().getName().equals(this.getClass().getName())) {
-			Continent compare = (Continent) o;
-			return getContinent().compareTo(compare.getContinent());
-		}
-		return 0;
+	public void setName(String name) {
+		this.name = name;
 	}
 }

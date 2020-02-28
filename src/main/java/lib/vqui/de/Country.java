@@ -1,33 +1,58 @@
 package lib.vqui.de;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
 
-public class Country implements Comparable{
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
-	private final String country;
-	private final List<Travel> travels;
+@Entity
+@Table(name = "hp.country")
+public class Country {
 
-	public Country(String countryName, ArrayList<Travel> exportListTravel) {
-		this.country = countryName;
-		this.travels = exportListTravel;
+	@Id
+	@Column(name = "country_id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	long id;
+
+	@Column(name = "country_name")
+	String name;
+
+	@ManyToOne
+	@JoinColumn(name = "continent_id")
+	private Continent continent;
+
+	public Continent getContinent() {
+		return continent;
 	}
 
-	public String getCountry() {
-		return country;
+	public long getId() {
+		return id;
 	}
 
-	public List<Travel> getTravels() {
-		return travels;
+	public void setId(long id) {
+		this.id = id;
 	}
 
-	@Override
-	public int compareTo(Object o) {
-		if (o.getClass().getName().equals(this.getClass().getName())) {
-			Country compare = (Country) o;
-			return getCountry().compareTo(compare.getCountry());
-		}
-		return 0;
+	public String getName() {
+		return name;
 	}
 
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	@ManyToMany
+	@JoinTable(name = "hp.travel_connector", joinColumns = @JoinColumn(name = "country_id"), inverseJoinColumns = @JoinColumn(name = "travel_id"))
+	private Set<Travel> linkedTravels;
+	public Set<Travel> getTravels() {
+		return linkedTravels;
+	}
 }

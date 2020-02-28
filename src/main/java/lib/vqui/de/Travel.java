@@ -1,43 +1,88 @@
 package lib.vqui.de;
 
+import java.util.Set;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "hp.travel")
 public class Travel implements Comparable<Travel> {
 
-	private final String travel;
-	private final String path;
+	@Id
+	@Column(name = "travel_id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	long id;
 
-	public Travel(String travelName, String travelPath) {
-		this.travel = travelName;
-		travelPath = travelPath.replaceAll(":\\\\", Constants.DISC_SEP);
-		travelPath = travelPath.replaceAll("\\\\", Constants.FILE_SEP);
-		travelPath = travelPath.replace("#", Constants.HASH_SEP);
-		travelPath = travelPath.replace(" ", Constants.EMPTY_SEP);
-		this.path = travelPath;
+	@Column(name = "travel_name")
+	String name;
+
+	@Column(name = "travel_month")
+	int month;
+
+	@Column(name = "travel_year")
+	int year;
+
+	@Column(name = "directory")
+	String directory;
+
+	public String getDirectory() {
+		return directory;
 	}
 
-	public String getTravel() {
-		return travel;
+	public void setDirectory(String directory) {
+		this.directory = directory;
 	}
 
-	public String getPath() {
-		return path;
-	}
-	
-	
-	public int compareTo(Travel obj) {
-		return getTravel().compareTo(obj.getTravel());
+	public int getMonth() {
+		return month;
 	}
 
-	public boolean equals(Object o) {
-		if (this == o) {
-			return true;
-		}
-		if (o == null || getClass() != o.getClass()) {
-			return false;
-		}
-
-		Travel other = (Travel) o;
-
-		return getTravel().equals(other.getTravel());
+	public void setMonth(int month) {
+		this.month = month;
 	}
 
+	public int getYear() {
+		return year;
+	}
+
+	public void setYear(int year) {
+		this.year = year;
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	@ManyToMany(mappedBy = "linkedTravels")
+	Set<Country> countries;
+
+	public Set<Country> getCountries() {
+		return countries;
+	}
+
+	public boolean equals(Travel o) {
+		return this.getName().equals(o.getName());
+	}
+
+	public int compareTo(Travel o) {
+		return name.compareToIgnoreCase(o.getName());
+	}
 }
