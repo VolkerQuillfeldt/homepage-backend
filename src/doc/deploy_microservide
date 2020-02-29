@@ -1,0 +1,31 @@
+1) OPEN POWERSHELL
+
+2) Change to Working directory
+
+2a) nginx local starten um postgrsql port 5432 nach 5433 umzusetzen oder dev profile anpassen
+
+3) mvn package docker:build  - build and create docker image
+
+4) docker tag filereader-vqui.de:latest volkerquillfeldt/myrepo:filereader    -aktelles Image markieren
+
+5) docker push volkerquillfeldt/myrepo:filereader
+
+6) Mit Server verbinden
+
+7) docker pull volkerquillfeldt/myrepo:filereader
+
+8)  docker stop file_reader
+
+9) docker rm file_reader
+
+10) docker run --restart always -d  -p 8081:8081 -v /srv/www/data:/app --name=file_reader volkerquillfeldt/myrepo:filereader
+
+******************************************************
+Datenbank Einträge geändert
+******************************************************
+1) Mit Server verbinden
+
+2) docker reastart file_reader   -- die Datenbank wird nur beim Start gelesen
+ 
+
+

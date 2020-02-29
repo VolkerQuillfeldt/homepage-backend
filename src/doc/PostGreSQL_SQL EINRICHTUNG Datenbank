@@ -1,0 +1,62 @@
+1) CREATE DATABASE FROM postgres
+
+DROP DATABASE IF EXISTS HOMEPAGE;
+CREATE DATABASE HOMEPAGE
+OWNER =  postgres
+ENCODING = 'UTF-8'			
+CONNECTION LIMIT = -1 ;
+DROP USER hpeditor;
+CREATE USER hpeditor WITH PASSWORD '######';
+grant all privileges on database homepage to hpeditor;
+
+2) Connect to homepage
+
+CREATE SCHEMA hp;
+
+DROP TABLE hp.travel_connector;
+DROP TABLE hp.travel;
+DROP TABLE hp.country;
+DROP TABLE hp.continent;
+
+CREATE TABLE hp.continent
+(
+  continent_id SERIAL PRIMARY KEY,
+  continent_name VARCHAR(256) NOT NULL
+ );
+
+CREATE TABLE hp.country
+(
+  country_id SERIAL PRIMARY KEY,
+  country_name VARCHAR(256) NOT NULL,
+  continent_id INT NOT NULL,
+  FOREIGN KEY (continent_id) REFERENCES hp.continent(continent_id)
+);
+
+CREATE TABLE hp.travel
+(
+  travel_id SERIAL PRIMARY KEY,
+  travel_name VARCHAR(256) NOT NULL,
+  travel_month INT NOT NULL,
+  travel_year INT NOT NULL,
+  directory VARCHAR(256) NOT NULL
+);
+
+CREATE TABLE hp.travel_connector
+(
+  country_id INT NOT NULL,
+  travel_id INT NOT NULL,
+  FOREIGN KEY (country_id) REFERENCES hp.country(country_id),
+  FOREIGN KEY (travel_id) REFERENCES hp.travel(travel_id)
+);
+
+INSERT INTO hp.continent (continent_name) VALUES ('Asia'),('Europe'),('Africa'),('North America'),('South America'),('Australia'),('Oceania');
+Insert into hp.country (country_name, continent_id) Values ('Nepal',1),('Maldives',1),('Sri Lanka',1),('India',1);
+Insert into hp.country (country_name, continent_id) Values ('Namibia',3),('Egypt',3);
+insert into hp.travel (travel_name,travel_month,travel_year,directory) Values ( 'Nilkreuzfahrt Mai 2006',5 , 2006, '/2006_Mai_Nil_Aegypten');
+insert into hp.travel_connector (country_id, travel_id) Values ( 6, 1);
+insert into hp.travel (travel_name,travel_month,travel_year,directory) Values ( 'Mustang Trek September 2017',9 , 2017, '/2017_09_Nepal_Mustang');
+insert into hp.travel_connector (country_id, travel_id) Values ( 1, 2);
+
+GRANT ALL ON SCHEMA hp TO hpeditor;
+GRANT ALL ON ALL TABLES IN SCHEMA hp TO hpeditor;
+
