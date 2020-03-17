@@ -1,14 +1,13 @@
 package lib.vqui.de;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class CountryJSON implements Comparable{
+public class CountryJSON implements Comparable<CountryJSON>{
 
 	private final String country;
 	private final List<TravelJSON> travels;
 
-	public CountryJSON(String countryName, ArrayList<TravelJSON> exportListTravel) {
+	public CountryJSON(String countryName, List<TravelJSON> exportListTravel) {
 		this.country = countryName;
 		this.travels = exportListTravel;
 	}
@@ -21,12 +20,9 @@ public class CountryJSON implements Comparable{
 		return travels;
 	}
 
-	public int compareTo(Object o) {
-		if (o.getClass().getName().equals(this.getClass().getName())) {
-			CountryJSON compare = (CountryJSON) o;
-			return getCountry().compareTo(compare.getCountry());
-		}
-		return 0;
+	@Override
+	public int compareTo(CountryJSON compare) {
+		return getCountry().compareTo(compare.getCountry());
 	}
-
+	
 }

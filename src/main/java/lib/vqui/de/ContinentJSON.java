@@ -1,14 +1,13 @@
 package lib.vqui.de;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class ContinentJSON implements Comparable {
+public class ContinentJSON implements Comparable<ContinentJSON> {
 
 	private final String continent;
 	private final List<CountryJSON> countries;
 
-	public ContinentJSON(String continent, ArrayList<CountryJSON> exportListCountry) {
+	public ContinentJSON(String continent, List<CountryJSON> exportListCountry) {
 		this.continent = continent;
 		this.countries = exportListCountry;
 	}
@@ -22,11 +21,8 @@ public class ContinentJSON implements Comparable {
 	}
 
 	@Override
-	public int compareTo(Object o) {
-		if (o.getClass().getName().equals(this.getClass().getName())) {
-			ContinentJSON compare = (ContinentJSON) o;
-			return getContinent().compareTo(compare.getContinent());
-		}
-		return 0;
+	public int compareTo(ContinentJSON compare) {
+		return getContinent().compareTo(compare.getContinent());
 	}
+
 }
