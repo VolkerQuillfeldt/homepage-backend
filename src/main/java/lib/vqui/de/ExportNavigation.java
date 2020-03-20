@@ -16,7 +16,7 @@ public class ExportNavigation {
 	}
 
 	public ExportNavigation(NavigationReader serviceReader) {
-		this.continentes = serviceReader.getContinentes();
+		this.continentes = (ArrayList<ContinentJSON>) serviceReader.getContinentes();
 	}
 	
 }
