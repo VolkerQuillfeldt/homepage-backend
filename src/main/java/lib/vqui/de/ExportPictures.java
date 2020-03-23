@@ -3,6 +3,7 @@ package lib.vqui.de;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -67,7 +68,7 @@ public class ExportPictures {
 		return pictures;
 	}
 
-	private static String encodeFileToBase64Binary(File file) throws Exception {
+	private static String encodeFileToBase64Binary(File file) throws IOException  {
 		String imageEnc = "";
 		FileInputStream fileInputStreamReader = new FileInputStream(file);
 		try {

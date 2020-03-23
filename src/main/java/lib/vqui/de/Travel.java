@@ -78,6 +78,11 @@ public class Travel implements Comparable<Travel> {
 		return countries;
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		return false;
+	}
+
 	public boolean equals(Travel o) {
 		return this.getName().equals(o.getName());
 	}
