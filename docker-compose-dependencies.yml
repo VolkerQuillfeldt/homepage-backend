@@ -1,0 +1,11 @@
+version: '2'
+services:
+  postgres:
+    # name needs to be unique or empty
+    container_name: homepage-postgres
+    image: postgres:latest
+    environment:
+      POSTGRES_PASSWORD: 123123123
+      POSTGRES_DB: homepage
+    ports:
+      - "5434:5432"
