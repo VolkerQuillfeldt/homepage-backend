@@ -1,7 +1,6 @@
-package lib.vqui.de;
+package lib.vqui.de.model.entity;
 
 import java.util.Set;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,9 +11,15 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
-@Table(name = "hp.country")
+@Getter
+@Setter
+@NoArgsConstructor
+@Table(name = "country", schema = "hp")
 public class Country {
 
 	@Id
@@ -29,29 +34,10 @@ public class Country {
 	@JoinColumn(name = "continent_id")
 	private Continent continent;
 
-	public Continent getContinent() {
-		return continent;
-	}
-
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
 	@ManyToMany
-	@JoinTable(name = "hp.travel_connector", joinColumns = @JoinColumn(name = "country_id"), inverseJoinColumns = @JoinColumn(name = "travel_id"))
+	@JoinTable(name = "travel_connector", schema = "hp", joinColumns = @JoinColumn(name = "country_id"), inverseJoinColumns = @JoinColumn(name = "travel_id"))
 	private Set<Travel> linkedTravels;
+
 	public Set<Travel> getTravels() {
 		return linkedTravels;
 	}
