@@ -1,0 +1,9 @@
+{
+  "properties": [
+    {
+      "name": "dataPath",
+      "type": "java.lang.String",
+      "description": "Description for dataPath."
+    }
+  ]
+}

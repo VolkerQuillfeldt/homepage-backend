@@ -20,6 +20,4 @@ public class NavigationReader {
     return continentRepository.findAll().stream().map(ContinentDto::new)
         .collect(Collectors.toCollection(ArrayList<ContinentDto>::new));
   }
-
-
 }
