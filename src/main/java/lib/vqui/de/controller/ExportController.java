@@ -34,12 +34,11 @@ public class ExportController {
 	}
 
 	@CrossOrigin(origins = {"http://localhost:3000", "http://192.168.178.*:3000"})
-	@GetMapping("/getPictures")
-	public ResponseEntity<PictureListDto> getPictures(@RequestParam String path,
-			@RequestParam Integer page, @RequestParam Integer count) {
+	@GetMapping("/getRollingPictures")
+	public ResponseEntity<PictureListDto> getRollingPictures(@RequestParam String path,
+			@RequestParam Integer position) {
 		path = dataPath + "webpicture" + path;
-		return ResponseEntity.ok(exportPictures.getPictures(path, page, count));
-
+		return ResponseEntity.ok(exportPictures.getRollingPictures(position, path));
 	}
 
 	@CrossOrigin(origins = {"http://localhost:3000", "http://192.168.178.*:3080"})
@@ -47,7 +46,7 @@ public class ExportController {
 	public ResponseEntity<PictureListDto> getPictures() {
 		String path = dataPath + "highlights";
 		int page = 1;
-		int count = 10;
+		int count = 999;
 		return ResponseEntity.ok(exportPictures.getPictures(path, page, count));
 	}
 

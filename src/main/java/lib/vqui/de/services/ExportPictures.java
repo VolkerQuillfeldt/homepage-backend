@@ -7,6 +7,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -53,16 +54,8 @@ public class ExportPictures {
       readDirectory(thisDir, startIndex, endIndex, pictureCount, pictures, new AtomicInteger(0));
     }
 
-    int maxPage = 1;
-    if (pictureCount.get() > 0) {
-      maxPage = pictureCount.get() / count;
-      if (pictureCount.get() % count != 0) {
-        maxPage++;
-      }
-    }
-
     log.debug("return {}", pictures.size());
-    return new PictureListDto(pictures, startIndex.get(), endIndex.get(), maxPage);
+    return new PictureListDto(pictures, false);
   }
 
 
@@ -77,13 +70,15 @@ public class ExportPictures {
     if (dir != null) {
       ArrayList<File> files = new ArrayList<>(Arrays.asList(dir));
       files.removeIf(isFileNotValid);
-      files.forEach(file -> {
-        currentIndex.incrementAndGet();
-        pictureCount.incrementAndGet();
-        if (startIndex.get() <= currentIndex.get() && currentIndex.get() <= endIndex.get()) {
-          pictures.add(encodeFileToBase64Binary(file));
-        }
-      });
+      files.stream()
+          .sorted(Comparator.comparing(File::getName))
+          .forEach(file -> {
+            currentIndex.incrementAndGet();
+            pictureCount.incrementAndGet();
+            if (startIndex.get() <= currentIndex.get() && currentIndex.get() <= endIndex.get()) {
+              pictures.add(encodeFileToBase64Binary(file));
+            }
+          });
     }
 
     dir = thisDir.listFiles(File::isDirectory);
@@ -94,5 +89,35 @@ public class ExportPictures {
           directory -> readDirectory(directory, startIndex, endIndex, pictureCount, pictures,
               currentIndex));
     }
+  }
+
+  public PictureListDto getRollingPictures(Integer position, String path) {
+    int count = 20;
+    AtomicInteger startIndex = new AtomicInteger((position - 1) * count + 1);
+    AtomicInteger endIndex = new AtomicInteger(position * count);
+    AtomicInteger pictureCount = new AtomicInteger(0);
+    List<String> pictures = new LinkedList<>();
+
+    path = path.replace(Constants.DISC_SEP, ":\\\\");
+    path = path.replace(Constants.FILE_SEP, "\\\\");
+    path = path.replace(Constants.HASH_SEP, "#");
+    path = path.replace(Constants.EMPTY_SEP, " ");
+
+    File thisDir = new File(path);
+
+    if (thisDir.isDirectory()) {
+      readDirectory(thisDir, startIndex, endIndex, pictureCount, pictures, new AtomicInteger(0));
+    }
+
+    int maxPage = 1;
+    if (pictureCount.get() > 0) {
+      maxPage = pictureCount.get() / count;
+      if (pictureCount.get() % count != 0) {
+        maxPage++;
+      }
+    }
+
+    log.debug("return {}", pictures.size());
+    return new PictureListDto(pictures, position == maxPage);
   }
 }
