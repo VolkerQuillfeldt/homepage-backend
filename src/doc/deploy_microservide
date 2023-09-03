@@ -4,9 +4,11 @@
 
 2a) nginx local starten um postgrsql port 5432 nach 5433 umzusetzen oder dev profile anpassen
 
-3) mvn package docker:build  - build and create docker image
+3) mvn package - build
 
-4) docker tag filereader-vqui.de:latest volkerquillfeldt/myrepo:filereader    -aktelles Image markieren
+4a) docker build -t filereader-vqui.de .    -Docker image bauen .Dockerfile im  working directory daher mit . am Ende
+
+4b) docker tag filereader-vqui.de:latest volkerquillfeldt/myrepo:filereader    -aktelles Image markieren
 
 5) docker push volkerquillfeldt/myrepo:filereader
 
